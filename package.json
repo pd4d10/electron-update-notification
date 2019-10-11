@@ -8,6 +8,7 @@
   "files": [
     "lib"
   ],
+  "types": "lib/index.d.ts",
   "scripts": {
     "watch": "tsc --watch"
   },
