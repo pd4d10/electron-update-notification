@@ -1,12 +1,15 @@
+import assert from 'assert'
+import path from 'path'
 import fetch from 'node-fetch'
 import electron from 'electron'
+const gh = require('github-url-to-object')
 
 interface Option {
-  repository: string
+  repository?: string
   token?: string
 }
 
-export async function setUpdateNotification(option: Option) {
+export async function setUpdateNotification(option: Option = {}) {
   if (electron.app.isReady) {
     checkUpdate(option)
   } else {
@@ -16,8 +19,18 @@ export async function setUpdateNotification(option: Option) {
   }
 }
 
-export async function checkUpdate({ repository, token }: Option) {
+export async function checkUpdate({ repository, token }: Option = {}) {
   if (!electron.app.isPackaged) return
+
+  if (!repository) {
+    const pkg = require(path.join(electron.app.getAppPath(), 'package.json'))
+    const obj = gh(pkg.repository)
+    assert(
+      obj,
+      'Repository not found. Add repository field to package.json file',
+    )
+    repository = obj.user + '/' + obj.repo
+  }
 
   try {
     const res = await fetch(
