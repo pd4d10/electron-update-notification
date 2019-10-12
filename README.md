@@ -18,9 +18,9 @@ npm install electron-update-notification
 ## Usage
 
 ```js
-import { checkUpdate } from 'electron-update-notification'
+import { setUpdateNotification } from 'electron-update-notification'
 
-checkUpdate({
+setUpdateNotification({
   repository: 'user/repo',
   token: '', // GitHub access token
 })

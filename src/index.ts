@@ -6,10 +6,18 @@ interface Option {
   token?: string
 }
 
-export async function checkUpdate({ repository, token }: Option) {
-  if (!electron.app.isPackaged) {
-    return
+export async function setUpdateNotification(option: Option) {
+  if (electron.app.isReady) {
+    checkUpdate(option)
+  } else {
+    electron.app.on('ready', () => {
+      checkUpdate(option)
+    })
   }
+}
+
+export async function checkUpdate({ repository, token }: Option) {
+  if (!electron.app.isPackaged) return
 
   try {
     const res = await fetch(
