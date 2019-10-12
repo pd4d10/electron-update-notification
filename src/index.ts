@@ -41,6 +41,7 @@ export async function checkUpdate({ repository, token }: Option = {}) {
     )
     const json = await res.json()
     const latest = json[0]
+    if (!latest) return
 
     // Remove leading v
     const latestVersion = latest.tag_name.startsWith('v')
@@ -51,7 +52,7 @@ export async function checkUpdate({ repository, token }: Option = {}) {
       electron.dialog.showMessageBox(
         {
           message: latest.body,
-          buttons: ['Later', ''],
+          buttons: ['Later', 'Download'],
         },
         res => {
           if (res === 0) {
