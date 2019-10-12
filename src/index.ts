@@ -51,8 +51,8 @@ export async function checkUpdate({ repository, token }: Option = {}) {
     if (latestVersion != electron.app.getVersion()) {
       electron.dialog.showMessageBox(
         {
-          message: latest.body,
-          buttons: ['Later', 'Download'],
+          message: `New release available: ${latestVersion}\n\n${latest.body}`,
+          buttons: ['Download', 'Later'],
         },
         res => {
           if (res === 0) {
